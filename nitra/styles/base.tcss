@@ -1,0 +1,28 @@
+/* Base styles for Nitra-TUI panels */
+
+Screen {
+    layout: grid;
+    grid-size: 2 2;
+    grid-gutter: 1;
+}
+
+.panel {
+    border: tall $primary;
+    padding: 1 2;
+}
+
+.metrics {
+    background: $boost;
+}
+
+.signals {
+    background: $success;
+}
+
+.command {
+    background: $warning;
+}
+
+.logs {
+    background: $surface;
+}

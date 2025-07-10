@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from textual.app import ComposeResult
 from textual.containers import Vertical
-from textual.widgets import Input, TextLog
+from textual.widgets import Input, Log
 from textual.widget import Widget
 
 from ..bot_manager import manager
@@ -15,21 +15,21 @@ class CommandPanel(Widget):
 
     def compose(self) -> ComposeResult:
         with Vertical():
-            yield TextLog(id="command_log", highlight=False)
+            yield Log(id="command_log", highlight=False)
             yield Input(placeholder="Enter command...", id="command_input")
 
     async def on_mount(self) -> None:
         """Populate initial command history."""
-        log = self.query_one("#command_log", TextLog)
+        log = self.query_one("#command_log", Log)
         for cmd in manager.commands:
-            log.write_line(cmd)
-        log.auto_scroll_bottom = True
+            log.write(cmd)
+        log.auto_scroll = True
 
     async def on_input_submitted(self, event: Input.Submitted) -> None:
         """Handle user command submission."""
         command = event.value.strip()
         if command:
             manager.add_command(command)
-            log = self.query_one("#command_log", TextLog)
-            log.write_line(command)
+            log = self.query_one("#command_log", Log)
+            log.write(command)
         event.input.value = ""

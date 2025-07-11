@@ -1,10 +1,10 @@
 from textual.app import ComposeResult
 from textual.containers import Grid
 
-from nitra_tui.panels.deployments import DeploymentsPanel
-from nitra_tui.panels.logs import LogsPanel
-from nitra_tui.panels.portfolio import PortfolioPanel
-from nitra_tui.panels.strategy import StrategyPanel
+from panels.deployments import DeploymentsPanel
+from panels.logs import LogsPanel
+from panels.portfolio import PortfolioPanel
+from panels.strategy import StrategyPanel
 
 
 class NitraLayout(Grid):

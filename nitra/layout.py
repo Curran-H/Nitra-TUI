@@ -1,19 +1,22 @@
 """Application layout container."""
 
-from textual.containers import Grid
-from textual.app import ComposeResult
+from __future__ import annotations
 
-from .panels.metrics_panel import MetricsPanel
-from .panels.signals_panel import SignalsPanel
-from .panels.command_panel import CommandPanel
-from .panels.logs_panel import LogsPanel
+from textual.app import ComposeResult
+from textual.containers import Grid
+
+from .panels.deployments_panel import DeploymentsPanel
+from .panels.detail_panel import StrategyDetailPanel
+from .panels.log_output_panel import LogOutputPanel
+from .panels.portfolio_panel import PortfolioPanel
 
 
 class NitraLayout(Grid):
-    """Defines the 2x2 grid layout for the application."""
+    """Defines the 2x2 grid layout for the dashboard."""
 
     def compose(self) -> ComposeResult:
-        yield MetricsPanel(id="metrics", classes="panel metrics")
-        yield SignalsPanel(id="signals", classes="panel signals")
-        yield CommandPanel(id="command", classes="panel command")
-        yield LogsPanel(id="logs", classes="panel logs")
+        yield DeploymentsPanel(id="deployments", classes="panel deployments")
+        yield LogOutputPanel(id="logs", classes="panel logs")
+        yield PortfolioPanel(id="portfolio", classes="panel portfolio")
+        yield StrategyDetailPanel(id="intel", classes="panel intel")
+

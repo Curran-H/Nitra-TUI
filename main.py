@@ -6,7 +6,7 @@ from layout import NitraLayout
 class NitraApp(App):
     """Main application entry point."""
 
-    CSS_PATH = "nitra_tui/styles.css"
+    CSS_PATH = "styles.css"
 
     def compose(self) -> ComposeResult:
         yield NitraLayout()

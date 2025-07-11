@@ -1,5 +1,7 @@
 from textual.app import ComposeResult
-from textual.widgets import Static, TextLog
+from textual.widgets import Static
+from textual.widgets import Log
+
 
 
 class LogsPanel(Static):
@@ -11,7 +13,7 @@ class LogsPanel(Static):
 
     def compose(self) -> ComposeResult:
         yield Static("[b]\u2593\u2593 LOGS \u2593\u2593[/b]", classes="header")
-        log = TextLog(highlight=False, markup=False, tall=False)
+        log = Log(highlight=False)
         for line in [
             "[INFO] 14:21:34 BUY BTC",
             "[ERROR] 14:21:36 API Timeout",

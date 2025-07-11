@@ -1,0 +1,23 @@
+Screen {
+    background: #1e1e23;
+    color: #e0e0e0;
+    padding: 1;
+}
+
+NitraLayout {
+    grid-size: 2 2;
+    grid-gutter: 1;
+    height: 100%;
+}
+
+.panel {
+    border: round #555555;
+    background: #24242b;
+    padding: 1 2;
+    content-align: left top;
+}
+
+.panel > .header {
+    text-style: bold;
+    margin-bottom: 1;
+}

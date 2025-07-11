@@ -11,18 +11,18 @@ Screen {
     padding: 1 2;
 }
 
-.metrics {
-    background: $boost;
-}
-
-.signals {
-    background: $success;
-}
-
-.command {
-    background: $warning;
+.deployments {
+    background: $surface-darkest;
 }
 
 .logs {
     background: $surface;
+}
+
+.portfolio {
+    background: $boost;
+}
+
+.intel {
+    background: $success-darken-1;
 }

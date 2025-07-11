@@ -1,9 +1,0 @@
-Screen {
-    layout: grid;
-    grid-size: 2 2;
-}
-
-.panel {
-    border: solid $primary;
-    padding: 1;
-}

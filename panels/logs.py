@@ -1,27 +1,37 @@
 from textual.app import ComposeResult
-from textual.widgets import Static
-from textual.widgets import Log
+from textual.containers import Horizontal
+from textual.widgets import Static, Label
 
+try:
+    from textual.widgets import TextLog
+except ImportError:
+    from textual.widgets import Log as TextLog
 
 
 class LogsPanel(Static):
     """Panel showing placeholder logs."""
 
     def __init__(self) -> None:
-        super().__init__(classes="panel")
-        self.id = "logs"
+        super().__init__(classes="panel", id="logs")
 
     def compose(self) -> ComposeResult:
         yield Static("[b]\u2593\u2593 LOGS \u2593\u2593[/b]", classes="header")
-        log = Log(highlight=False)
+
+        log = TextLog(highlight=False, markup=False, classes="log-area")
         for line in [
             "[INFO] 14:21:34 BUY BTC",
             "[ERROR] 14:21:36 API Timeout",
             "[DEBUG] Polling…",
             "[INFO] 14:22:10 SELL BTC",
             "[INFO] 14:22:55 BUY ETH",
+            "[INFO] 14:23:05 BUY DOGE",
         ]:
             log.write(line)
-        yield log
-        yield Static("[Filter \u25BE] [Pause] [Clear] [Auto-Scroll: ON]", classes="footer")
 
+        yield log
+        yield Horizontal(
+            Label("[Pause]"),
+            Label("[Clear]"),
+            Label("[Auto-Scroll]"),
+            classes="log-controls",
+        )

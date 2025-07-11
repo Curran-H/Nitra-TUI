@@ -17,7 +17,25 @@ NitraLayout {
     content-align: left top;
 }
 
-.panel > .header {
+.panel-header {
     text-style: bold;
     margin-bottom: 1;
+}
+
+.metric {
+    width: 50%;
+}
+
+.metric-value {
+    width: 50%;
+    content-align: right middle;
+}
+
+.log-area {
+    height: 8;
+}
+
+.log-controls {
+    padding-top: 1;
+    content-align: left middle;
 }

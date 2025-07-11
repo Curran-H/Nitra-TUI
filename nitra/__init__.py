@@ -1,1 +1,0 @@
-"""Nitra terminal UI package."""

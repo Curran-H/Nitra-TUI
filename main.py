@@ -1,6 +1,6 @@
 from textual.app import App, ComposeResult
 
-from nitra.layout import NitraLayout
+from layout import NitraLayout
 
 
 class NitraApp(App):

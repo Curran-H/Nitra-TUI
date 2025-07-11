@@ -3,7 +3,7 @@ Screen {
     grid-size: 2 2;
 }
 
-Static {
+.panel {
     border: solid $primary;
     padding: 1;
 }

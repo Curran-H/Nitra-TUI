@@ -1,12 +1,47 @@
+# panels/logs.py
+"""
+logs.py – streaming log viewer with pause / clear / auto-scroll
+Uses Button.Pressed for click handling and supports scrollable multiline logs.
+"""
+
 from textual.app import ComposeResult
 from textual.containers import Horizontal
-from textual.widgets import Static, Label, Log
-from textual.events import Click
-from textual.widget import Widget
+from textual.widgets import Static, Log, Button
+
+__all__ = ["LogsPanel"]
 
 
 class LogsPanel(Static):
-    """Panel showing real-time logs with interactive controls."""
+    """Real-time log viewer with user controls."""
+
+    DEFAULT_CSS = """
+    LogsPanel {
+        border: round #5a5a7a;
+        padding: 1;
+        background: #2e2e3f;
+    }
+    LogsPanel > .panel-header {
+        background: #444464;
+        color: #ffffff;
+        padding: 0 1;
+        dock: top;
+        height: 1;
+    }
+    LogsPanel .log-area {
+        max-height: 6;
+        padding: 1 0 0 2;
+        background: #1e1e2e;
+        overflow-y: scroll;
+    }
+    LogsPanel .log-controls {
+        padding: 1 0 0 2;
+    }
+    LogsPanel Button {
+        margin-right: 2;
+        background: #3b3b5f;
+        color: #ffffff;
+    }
+    """
 
     def __init__(self) -> None:
         super().__init__(classes="panel", id="logs")
@@ -14,48 +49,49 @@ class LogsPanel(Static):
         self.paused: bool = False
         self.auto_scroll: bool = True
 
-    def compose(self) -> ComposeResult:
-        yield Static("LOGS", classes="panel-header")
+    def write_log(self, message: str) -> None:
+        """Append to log respecting pause / auto-scroll."""
+        if self._log and not self.paused:
+            self._log.write(message)
+            if self.auto_scroll:
+                self._log.scroll_end(animate=False)
 
+    def compose(self) -> ComposeResult:
+        # Header
+        yield Static(" LOGS", classes="panel-header")
+
+        # The scrollable Log widget
         self._log = Log(highlight=False, classes="log-area")
         self._log.markup = False
+        yield self._log
 
-        for line in [
+        # Seed some demo entries
+        for entry in [
             "[INFO] 14:21:34 BUY BTC",
             "[ERROR] 14:21:36 API Timeout",
             "[DEBUG] Polling…",
             "[INFO] 14:22:10 SELL BTC",
             "[INFO] 14:22:55 BUY ETH",
-            "[INFO] 14:23:05 BUY DOGE",
         ]:
-            self._log.write(line)
+            self.write_log(entry)
 
-        yield self._log
-
+        # Control buttons
         yield Horizontal(
-            Label("[Pause]", id="pause-button"),
-            Label("[Clear]", id="clear-button"),
-            Label("[Auto-Scroll]", id="autoscroll-button"),
+            Button("Pause", id="pause-button"),
+            Button("Clear", id="clear-button"),
+            Button("Auto-Scroll ON", id="autoscroll-button"),
             classes="log-controls",
         )
 
-    def on_click(self, event: Click) -> None:
-        target: Widget = event.target
-
-        if target.id == "pause-button":
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        """Handle Pause / Clear / Auto-Scroll toggles."""
+        btn = event.button
+        if btn.id == "pause-button":
             self.paused = not self.paused
-            target.update("[Resume]" if self.paused else "[Pause]")
-
-        elif target.id == "clear-button" and self._log:
+            btn.label = "Resume" if self.paused else "Pause"
+        elif btn.id == "clear-button" and self._log:
             self._log.clear()
-
-        elif target.id == "autoscroll-button":
+        elif btn.id == "autoscroll-button":
             self.auto_scroll = not self.auto_scroll
-            target.update("[Auto-Scroll: ON]" if self.auto_scroll else "[Auto-Scroll: OFF]")
-
-    def write_log(self, message: str) -> None:
-        """External method for writing new logs safely."""
-        if self._log and not self.paused:
-            self._log.write(message)
-            if self.auto_scroll:
-                self._log.scroll_end(animate=False)
+            state = "ON" if self.auto_scroll else "OFF"
+            btn.label = f"Auto-Scroll {state}"
